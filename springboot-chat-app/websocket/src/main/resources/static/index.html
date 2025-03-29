@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-User Chat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <div class="w-full max-w-md bg-white shadow-lg rounded-lg p-4">
+        <h2 class="text-xl font-bold text-center text-gray-700">Chat Room</h2>
+
+        <!-- Username Input -->
+        <div id="usernameContainer" class="mb-4">
+            <input id="username" type="text" placeholder="Enter your name" 
+                class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <button onclick="setUsername()" class="mt-2 w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+                Join Chat
+            </button>
+        </div>
+
+        <!-- Chat Messages Box -->
+        <div id="chatContainer" class="hidden">
+            <div id="messages" class="h-64 overflow-y-auto border rounded-lg p-3 bg-gray-50"></div>
+
+            <!-- Message Input Box -->
+            <div class="flex items-center mt-3">
+                <input id="message" type="text" placeholder="Type a message" 
+                    class="flex-grow p-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <button onclick="sendMessage()" 
+                    class="px-4 py-2 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600">
+                    Send
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+    <script src="script.js"></script>
+<script>
+    window.addEventListener("beforeunload", function () {
+    if (username) {
+        stompClient.send("/app/user-left", {}, JSON.stringify({username: username}));
+    }
+});
+
+</script>
+</body>
+</html>
